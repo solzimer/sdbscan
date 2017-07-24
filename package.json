@@ -1,0 +1,14 @@
+{
+  "name": "sdbscan",
+  "version": "0.0.1",
+  "description": "DBSCAN implementation for javascript. Works in node and browser",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dbscan"
+  ],
+  "author": "",
+  "license": "MIT"
+}
