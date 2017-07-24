@@ -18,6 +18,7 @@ $RECYCLE.BIN/
 *.lnk
 
 test/out
+test/perf
 
 # =========================
 # Operating System Files
