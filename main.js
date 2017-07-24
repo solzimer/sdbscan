@@ -31,7 +31,6 @@ regionQuery(P, epsilon):
 
 class DBScan {
 	constructor(data,eps,min) {
-		this._cache = [];
 		this._data = this.initData(data);
 		this._eps = eps;
 		this._min = min;
@@ -45,8 +44,7 @@ class DBScan {
 
 	regionQuery(p) {
 		let	eps = this._eps,
-				data = this._data,
-				cache = this._cache;
+				data = this._data;
 
 		return data.filter(d=>{
 			return eudist(d.v,p.v,true) <= eps;
