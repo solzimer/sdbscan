@@ -37,9 +37,13 @@ class DBScan {
 	}
 
 	initData(data) {
-		return data.map((v,i)=>{
-			return {v:v, visited:false, idx:i, k:0}
-		});
+		var ret = [], len = data.length;
+
+		for(let i=0;i<len;i++) {
+			ret.push({v:data[i], visited:false, idx:i, k:0});
+		}
+
+		return ret;
 	}
 
 	regionQuery(p) {
@@ -69,8 +73,8 @@ class DBScan {
 			if(!np.visited) {
 				np.visited = true;
 				let newRegion = this.regionQuery(np);
-				if(newRegion.length >= eps) {
-					newRegion.forEach(p=>region.push(p));
+				if(newRegion.length >= min) {
+					region = region.concat(newRegion);
 				}
 				if(!np.k) {
 					np.k = k.id;
