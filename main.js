@@ -44,11 +44,15 @@ class DBScan {
 
 	regionQuery(p) {
 		let	eps = this._eps,
-				data = this._data;
+				data = this._data,
+				ret = [], len = data.length;
 
-		return data.filter(d=>{
-			return eudist(d.v,p.v,true) <= eps;
-		});
+		for(let i=0;i<len;i++) {
+			if(eudist(data[i].v,p.v,true) <= eps)
+				ret.push(data[i]);
+		}
+
+		return ret;
 	}
 
 	expandCluster(p, region, k) {
