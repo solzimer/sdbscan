@@ -29,68 +29,94 @@ regionQuery(P, epsilon):
       return all points within the n-dimensional sphere centered at P with radius epsilon (including P)
 */
 
-function regionQuery(data, p, eps) {
-	return data.filter(d=>{
-		return eudist(d.v,p.v,true) <= eps;
-	});
-}
-
-function expandCluster(p, region, data, k, eps, min) {
-	// Add p to cluster k
-	p.k = k.id;
-	k.data.push(p.v);
-
-	while(region.length) {
-		let np = region.pop();
-		if(!np.visited) {
-			np.visited = true;
-			let newRegion = regionQuery(data, np, eps);
-			if(newRegion.length >= eps) {
-				newRegion.forEach(p=>region.push(p));
-			}
-			if(!np.k) {
-				np.k = k.id;
-				k.data.push(np.v);
-			}
-		}
+class DBScan {
+	constructor(data,eps,min) {
+		this._cache = [];
+		this._data = this.initData(data);
+		this._eps = eps;
+		this._min = min;
 	}
-}
 
-function dbscan(data,eps,min) {
-	var kid = 0;
-	var ks = [];		// Clusters
-	var noise = [];	// Noise
-	var k = null		// Current cluster
+	initData(data) {
+		return data.map((v,i)=>{
+			return {v:v, visited:false, idx:i, k:0}
+		});
+	}
 
-	// Unvisited points
-	data = data.map((v,i)=>{return {v:v, visited:false, idx:i, k:0}});
-	var unvisited = [].concat(data);
+	regionQuery(p) {
+		let	eps = this._eps,
+				data = this._data,
+				cache = this._cache;
 
-	while(unvisited.length) {
-		let p = unvisited.pop();
-		if(!p.visited) {
-			// Mark as visited
-			p.visited = true;
+		return data.filter(d=>{
+			return eudist(d.v,p.v,true) <= eps;
+		});
+	}
 
-			// Get the reachable region for this point
-			let region = regionQuery(data,p,eps);
+	expandCluster(p, region, k) {
+		let eps = this._eps,
+				data = this._data,
+				min = this._min;
 
-			// Too small region
-			if(region.length<min) {
-				noise.push(p);
-			}
-			else {
-				k = {id:kid++, data:[]};
-				ks.push(k);
-				expandCluster(p, region, data, k, eps, min);
+		// Add p to cluster k
+		p.k = k.id;
+		k.data.push(p.v);
+
+		while(region.length) {
+			let np = region.pop();
+			if(!np.visited) {
+				np.visited = true;
+				let newRegion = this.regionQuery(np);
+				if(newRegion.length >= eps) {
+					newRegion.forEach(p=>region.push(p));
+				}
+				if(!np.k) {
+					np.k = k.id;
+					k.data.push(np.v);
+				}
 			}
 		}
 	}
 
-	return {
-		noise : noise.map(p=>p.v),
-		clusters : ks
+	dbscan() {
+		let data = this._data,
+				min = this._min,
+				kid = 0,
+				ks = [],		// Clusters
+				noise = [],	// Noise
+				k = null;		// Current cluster
+
+		// Unvisited points
+		var unvisited = [].concat(data);
+
+		while(unvisited.length) {
+			let p = unvisited.pop();
+			if(!p.visited) {
+				// Mark as visited
+				p.visited = true;
+
+				// Get the reachable region for this point
+				let region = this.regionQuery(p);
+
+				// Too small region
+				if(region.length<min) {
+					noise.push(p);
+				}
+				else {
+					k = {id:kid++, data:[]};
+					ks.push(k);
+					this.expandCluster(p, region, k);
+				}
+			}
+		}
+
+		return {
+			noise : noise.map(p=>p.v),
+			clusters : ks
+		}
 	}
 }
 
-module.exports = dbscan;
+module.exports = function(data,eps,min) {
+	return (new DBScan(data,eps,min)).dbscan();
+}
