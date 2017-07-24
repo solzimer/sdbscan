@@ -1,0 +1,96 @@
+const
+	Distance = require("./distance.js"),
+	eudist = Distance.eudist;
+
+/*
+DBSCAN(D, epsilon, min_points):
+      C = 0
+      for each unvisited point P in dataset
+            mark P as visited
+            sphere_points = regionQuery(P, epsilon)
+            if sizeof(sphere_points) < min_points
+                  ignore P
+            else
+                  C = next cluster
+                  expandCluster(P, sphere_points, C, epsilon, min_points)
+
+expandCluster(P, sphere_points, C, epsilon, min_points):
+      add P to cluster C
+      for each point P’ in sphere_points
+            if P’ is not visited
+                  mark P’ as visited
+                  sphere_points’ = regionQuery(P’, epsilon)
+                  if sizeof(sphere_points’) >= min_points
+                        sphere_points = sphere_points joined with sphere_points’
+                  if P’ is not yet member of any cluster
+                        add P’ to cluster C
+
+regionQuery(P, epsilon):
+      return all points within the n-dimensional sphere centered at P with radius epsilon (including P)
+*/
+
+function regionQuery(data, p, eps) {
+	return data.filter(d=>{
+		return eudist(d.v,p.v,true) <= eps;
+	});
+}
+
+function expandCluster(p, region, data, k, eps, min) {
+	// Add p to cluster k
+	p.k = k.id;
+	k.data.push(p.v);
+
+	while(region.length) {
+		let np = region.pop();
+		if(!np.visited) {
+			np.visited = true;
+			let newRegion = regionQuery(data, np, eps);
+			if(newRegion.length >= eps) {
+				newRegion.forEach(p=>region.push(p));
+			}
+			if(!np.k) {
+				np.k = k.id;
+				k.data.push(np.v);
+			}
+		}
+	}
+}
+
+function dbscan(data,eps,min) {
+	var kid = 0;
+	var ks = [];		// Clusters
+	var noise = [];	// Noise
+	var k = null		// Current cluster
+
+	// Unvisited points
+	data = data.map((v,i)=>{return {v:v, visited:false, idx:i, k:0}});
+	var unvisited = [].concat(data);
+
+	while(unvisited.length) {
+		let p = unvisited.pop();
+		if(!p.visited) {
+			// Mark as visited
+			p.visited = true;
+
+			// Get the reachable region for this point
+			let region = regionQuery(data,p,eps);
+
+			// Too small region
+			if(region.length<min) {
+				noise.push(p);
+			}
+			else {
+				k = {id:kid++, data:[]};
+				ks.push(k);
+				expandCluster(p, region, data, k, eps, min);
+			}
+		}
+	}
+
+	return {
+		noise : noise.map(p=>p.v),
+		clusters : ks
+	}
+}
+
+module.exports = dbscan;
