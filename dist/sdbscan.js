@@ -193,9 +193,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 					// multidimensional for the algoryth purposes
 					if (!this._multi) {
 						ks.forEach(function (k) {
-							k = k.map(function (v) {
+							k.data = k.data.map(function (v) {
 								return v[0];
 							});
+						});
+						noise.forEach(function (p) {
+							return p.v = p.v[0];
 						});
 					}
 

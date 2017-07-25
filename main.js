@@ -118,10 +118,11 @@ class DBScan {
 		// multidimensional for the algoryth purposes
 		if(!this._multi) {
 			ks.forEach(k=>{
-				k = k.map(v=>v[0]);
+				k.data = k.data.map(v=>v[0]);
 			});
+			noise.forEach(p=>p.v=p.v[0]);
 		}
-		
+
 		return {
 			noise : noise.map(p=>p.v),
 			clusters : ks
