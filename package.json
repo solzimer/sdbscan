@@ -1,6 +1,6 @@
 {
   "name": "sdbscan",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DBSCAN implementation for javascript. Works in node and browser",
   "author": "David Gómez Matarrodona <solzimer@gmail.com>",
   "url": "https://github.com/owner/project/issues",
