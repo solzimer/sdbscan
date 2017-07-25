@@ -17,6 +17,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Project specific
+npm-debug.log
 test/out
 test/perf
 
