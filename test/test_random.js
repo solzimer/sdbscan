@@ -1,7 +1,7 @@
 const sdbscan = require("../main.js");
 const data = require("./data/random_pts.js");
 
-var res = sdbscan(data,0.7,3);
+var res = sdbscan(data,0.75,3);
 console.error(JSON.stringify(res,null,2));
 
 var out = [];
