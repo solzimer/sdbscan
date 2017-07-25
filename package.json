@@ -1,22 +1,22 @@
 {
   "name": "sdbscan",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "DBSCAN implementation for javascript. Works in node and browser",
-	"author": "David Gómez Matarrodona <solzimer@gmail.com>",
+  "author": "David Gómez Matarrodona <solzimer@gmail.com>",
   "url": "https://github.com/owner/project/issues",
   "email": "solzimer@gmail.com",
-	"license": "MIT",
+  "license": "MIT",
   "main": "main.js",
-	"repository": "solzimer/sdbscan",
+  "repository": "solzimer/sdbscan",
   "keywords": [
     "dbscan",
-		"cluster",
-		"density",
-		"classification",
-		"unidimiensional",
-		"multidimensional"
+    "cluster",
+    "density",
+    "classification",
+    "unidimiensional",
+    "multidimensional"
   ],
-	"devDependencies": {
+  "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
@@ -25,5 +25,5 @@
     "grunt-contrib-uglify": "^3.0.1",
     "load-grunt-tasks": "^3.5.2",
     "uglify": "^0.1.5"
-  }	
+  }
 }
