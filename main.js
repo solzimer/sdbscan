@@ -31,24 +31,25 @@ regionQuery(P, epsilon):
 
 class DBScan {
 	constructor(data,eps,min) {
+		this._multi = data[0].length>0;
 		this._data = this.initData(data);
 		this._eps = eps;
 		this._min = min;
 	}
 
 	initData(data) {
-		var ret = [], len = data.length;
+		let ret = [], len = data.length;
+		let multi = this._multi;
 
 		for(let i=0;i<len;i++) {
-			ret.push({v:data[i], visited:false, idx:i, k:0});
+			ret.push({v:multi? data[i] : [data[i]], visited:false, idx:i, k:0});
 		}
 
 		return ret;
 	}
 
 	regionQuery(p) {
-		let	eps = this._eps,
-				data = this._data,
+		let	eps = this._eps, data = this._data,
 				ret = [], len = data.length;
 
 		for(let i=0;i<len;i++) {
@@ -60,9 +61,7 @@ class DBScan {
 	}
 
 	expandCluster(p, region, k) {
-		let eps = this._eps,
-				data = this._data,
-				min = this._min;
+		let eps = this._eps, data = this._data, min = this._min;
 
 		// Add p to cluster k
 		p.k = k.id;
@@ -85,8 +84,7 @@ class DBScan {
 	}
 
 	dbscan() {
-		let data = this._data,
-				min = this._min,
+		let data = this._data, min = this._min,
 				kid = 0,
 				ks = [],		// Clusters
 				noise = [],	// Noise
@@ -116,6 +114,14 @@ class DBScan {
 			}
 		}
 
+		// Restore unidimiensional data that was transformed to
+		// multidimensional for the algoryth purposes
+		if(!this._multi) {
+			ks.forEach(k=>{
+				k = k.map(v=>v[0]);
+			});
+		}
+		
 		return {
 			noise : noise.map(p=>p.v),
 			clusters : ks
