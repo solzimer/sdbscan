@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 				watch: true,
 				keepAlive: true,
 				files: {
-					'dist/skmeans.js': ['browser.js']
+					'dist/sdbscan.js': ['browser.js']
 				}
 			}
 		},
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/skmeans.js': 'dist/skmeans.js'
+					'dist/sdbscan.js': 'dist/sdbscan.js'
 				}
 			}
 		},
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 	    },
 			dist : {
 				files: {
-					'dist/skmeans.min.js' : ['dist/skmeans.js']
+					'dist/sdbscan.min.js' : ['dist/sdbscan.js']
 				}
 			}
 	  },

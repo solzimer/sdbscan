@@ -18,6 +18,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Project specific
+node_modules
 npm-debug.log
 test/out
 test/perf
