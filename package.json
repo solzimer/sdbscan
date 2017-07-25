@@ -1,6 +1,6 @@
 {
   "name": "sdbscan",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DBSCAN implementation (density based spatial clustering) for javascript. Works in node and browser",
   "author": "David Gómez Matarrodona <solzimer@gmail.com>",
   "url": "https://github.com/owner/project/issues",
@@ -10,12 +10,12 @@
   "repository": "solzimer/sdbscan",
   "keywords": [
     "dbscan",
-		"spatial",
+    "spatial",
     "cluster",
-		"clustering",
-		"noise",
+    "clustering",
+    "noise",
     "density",
-		"groups",
+    "groups",
     "classification",
     "unidimiensional",
     "multidimensional"
