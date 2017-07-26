@@ -1,6 +1,6 @@
 {
   "name": "sdbscan",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "DBSCAN implementation (density based spatial clustering) for javascript. Works in node and browser",
   "author": "David Gómez Matarrodona <solzimer@gmail.com>",
   "url": "https://github.com/owner/project/issues",
