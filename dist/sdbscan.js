@@ -150,8 +150,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 					p.k = k.id;
 					k.data.push(p.v);
 
-					while (region.length) {
-						var np = region.pop();
+					// region.length is dynamic becouse items added
+					// from newRegion to region
+					for (var j = 0; j < region.length; j++) {
+						var np = region[j];
 						if (!np.visited) {
 							np.visited = true;
 							var newRegion = this.regionQuery(np),
@@ -173,6 +175,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 				value: function dbscan() {
 					var data = this._data,
 					    min = this._min,
+					    len = data.length,
 					    kid = 0,
 					    ks = [],
 					    // Clusters
@@ -180,11 +183,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 					    // Noise
 					k = null; // Current cluster
 
-					// Unvisited points
-					var unvisited = [].concat(data);
-
-					while (unvisited.length) {
-						var p = unvisited.pop();
+					for (var j = 0; j < len; j++) {
+						var p = data[j];
 						if (!p.visited) {
 							// Mark as visited
 							p.visited = true;
