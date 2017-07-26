@@ -91,6 +91,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return all points within the n-dimensional sphere centered at P with radius epsilon (including P)
   */
 
+		var Point = function Point(v, idx) {
+			_classCallCheck(this, Point);
+
+			this.v = v;
+			this.idx = idx || 0;
+			this.k = 0;
+			this.visited = false;
+		};
+
 		var DBScan = function () {
 			function DBScan(data, eps, min) {
 				_classCallCheck(this, DBScan);
@@ -109,7 +118,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 					var multi = this._multi;
 
 					for (var i = 0; i < len; i++) {
-						ret.push({ v: multi ? data[i] : [data[i]], visited: false, idx: i, k: 0 });
+						ret.push(new Point(multi ? data[i] : [data[i]], i));
 					}
 
 					return ret;
@@ -123,7 +132,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 					    len = data.length;
 
 					for (var i = 0; i < len; i++) {
-						if (eudist(data[i].v, p.v, true) <= eps) ret.push(data[i]);
+						var np = data[i];
+						if (np != p && np.visited) continue;
+						if (eudist(np.v, p.v, true) <= eps) ret.push(np);
 					}
 
 					return ret;
@@ -143,9 +154,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 						var np = region.pop();
 						if (!np.visited) {
 							np.visited = true;
-							var newRegion = this.regionQuery(np);
-							if (newRegion.length >= min) {
-								region = region.concat(newRegion);
+							var newRegion = this.regionQuery(np),
+							    rlen = newRegion.length;
+							if (rlen >= min) {
+								for (var i = 0; i < rlen; i++) {
+									region.push(newRegion[i]);
+								}
 							}
 							if (!np.k) {
 								np.k = k.id;

@@ -29,6 +29,15 @@ regionQuery(P, epsilon):
       return all points within the n-dimensional sphere centered at P with radius epsilon (including P)
 */
 
+class Point {
+	constructor(v,idx) {
+		this.v = v;
+		this.idx = idx || 0;
+		this.k = 0;
+		this.visited = false;
+	}
+}
+
 class DBScan {
 	constructor(data,eps,min) {
 		this._multi = data[0].length>0;
@@ -42,7 +51,7 @@ class DBScan {
 		let multi = this._multi;
 
 		for(let i=0;i<len;i++) {
-			ret.push({v:multi? data[i] : [data[i]], visited:false, idx:i, k:0});
+			ret.push(new Point(multi? data[i] : [data[i]], i));
 		}
 
 		return ret;
@@ -73,9 +82,12 @@ class DBScan {
 			let np = region.pop();
 			if(!np.visited) {
 				np.visited = true;
-				let newRegion = this.regionQuery(np);
-				if(newRegion.length >= min) {
-					region = region.concat(newRegion);
+				let
+					newRegion = this.regionQuery(np),
+					rlen = newRegion.length;
+				if(rlen >= min) {
+					for(let i=0;i<rlen;i++)
+						region.push(newRegion[i]);
 				}
 				if(!np.k) {
 					np.k = k.id;
