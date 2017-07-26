@@ -78,8 +78,10 @@ class DBScan {
 		p.k = k.id;
 		k.data.push(p.v);
 
-		while(region.length) {
-			let np = region.pop();
+		// region.length is dynamic becouse items added
+		// from newRegion to region
+		for(let j=0;j<region.length;j++) {
+			let np = region[j];
 			if(!np.visited) {
 				np.visited = true;
 				let
@@ -99,16 +101,14 @@ class DBScan {
 
 	dbscan() {
 		let data = this._data, min = this._min,
+				len = data.length,
 				kid = 0,
 				ks = [],		// Clusters
 				noise = [],	// Noise
 				k = null;		// Current cluster
 
-		// Unvisited points
-		var unvisited = [].concat(data);
-
-		while(unvisited.length) {
-			let p = unvisited.pop();
+		for(let j=0;j<len;j++) {
+			let p = data[j];
 			if(!p.visited) {
 				// Mark as visited
 				p.visited = true;
