@@ -33,7 +33,7 @@ class Point {
 	constructor(v,idx) {
 		this.v = v;
 		this.idx = idx || 0;
-		this.k = 0;
+		this.k = -1;
 		this.visited = false;
 	}
 }
@@ -73,10 +73,11 @@ class DBScan {
 
 	expandCluster(p, region, k) {
 		let eps = this._eps, data = this._data, min = this._min;
+		let kdata = k.data, kid = k.id;
 
 		// Add p to cluster k
-		p.k = k.id;
-		k.data.push(p.v);
+		p.k = kid;
+		kdata.push(p.v);
 
 		// region.length is dynamic becaouse items added
 		// from newRegion to region
@@ -94,15 +95,14 @@ class DBScan {
 
 				// If it's a valid region, append to the original region
 				if(nrlen >= min) {
-					let nlen = region.length+nrlen;
-					for(let i=region.length,j=0;i<nlen;i++,j++)
+					for(let i=region.length,j=0;j<nrlen;i++,j++)
 						region[i] = newRegion[j];
 				}
 
 				// if the point isn't assigned to any cluster, assign to current
-				if(!np.k) {
-					np.k = k.id;
-					k.data.push(np.v);
+				if(np.k<0) {
+					np.k = kid;
+					kdata.push(np.v);
 				}
 			}
 		}
@@ -127,7 +127,7 @@ class DBScan {
 
 				// Too small region
 				if(region.length<min) {
-					noise.push(p);
+					noise.push(p.v);
 				}
 				// Expand cluster from this region
 				else {
@@ -144,11 +144,11 @@ class DBScan {
 			ks.forEach(k=>{
 				k.data = k.data.map(v=>v[0]);
 			});
-			noise.forEach(p=>p.v=p.v[0]);
+			noise = noise.map(p=>p[0]);
 		}
 
 		return {
-			noise : noise.map(p=>p.v),
+			noise : noise,//.map(p=>p.v),
 			clusters : ks
 		}
 	}
