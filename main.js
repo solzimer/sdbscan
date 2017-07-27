@@ -129,6 +129,7 @@ class DBScan {
 				if(region.length<min) {
 					noise.push(p);
 				}
+				// Expand cluster from this region
 				else {
 					k = {id:kid++, data:[]};
 					ks.push(k);
