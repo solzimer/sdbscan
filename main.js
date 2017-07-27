@@ -78,19 +78,28 @@ class DBScan {
 		p.k = k.id;
 		k.data.push(p.v);
 
-		// region.length is dynamic becouse items added
+		// region.length is dynamic becaouse items added
 		// from newRegion to region
 		for(let j=0;j<region.length;j++) {
+			// Get a point from the region
 			let np = region[j];
+
+			// If hasn't benn visited
 			if(!np.visited) {
+				// Mark as visited
 				np.visited = true;
-				let
-					newRegion = this.regionQuery(np),
-					rlen = newRegion.length;
-				if(rlen >= min) {
-					for(let i=0;i<rlen;i++)
-						region.push(newRegion[i]);
+
+				// Get the region for this point
+				let	newRegion = this.regionQuery(np), nrlen = newRegion.length;
+
+				// If it's a valid region, append to the original region
+				if(nrlen >= min) {
+					let nlen = region.length+nrlen;
+					for(let i=region.length,j=0;i<nlen;i++,j++)
+						region[i] = newRegion[j];
 				}
+
+				// if the point isn't assigned to any cluster, assign to current
 				if(!np.k) {
 					np.k = k.id;
 					k.data.push(np.v);
