@@ -1,4 +1,4 @@
-const sdbscan = require("../main.js");
+const sdbscan = require("../main3.js");
 const data = require("./data/well-separated.js");
 
 var res = sdbscan(data,1,3);

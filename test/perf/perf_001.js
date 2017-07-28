@@ -1,5 +1,7 @@
 const
 	sdbscan = require("../../main.js"),
+	sdbscan2 = require("../../main2.js"),
+	sdbscan3 = require("../../main3.js"),
 	dcdbscan = require('density-clustering'),
 	Benchmark = require('benchmark');
 
@@ -10,6 +12,12 @@ var data = require("../data/well-separated.js");
 suite.
 	add('sdbscan', function() {
 	  sdbscan(data,1,3);
+	}).
+	add('sdbscan2', function() {
+	  sdbscan2(data,1,3);
+	}).
+	add('sdbscan3', function() {
+	  sdbscan3(data,1,3);
 	}).
 	add('density-cluster-dbscan', function() {
 		let dbscan = new dcdbscan.DBSCAN();
