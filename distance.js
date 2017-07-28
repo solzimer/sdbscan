@@ -7,11 +7,11 @@ module.exports = {
 		var sum = 0;
 
 		for(let i=0;i<len;i++) {
-			var d = (v1[i]||0) - (v2[i]||0);
+			var d = v1[i] - v2[i];
 			sum += d*d;
 		}
-		// Square root not really needed
-		return sqrt? Math.sqrt(sum) : sum;
+
+		return Math.sqrt(sum);
 	},
 
 	mandist(v1,v2,sqrt) {
