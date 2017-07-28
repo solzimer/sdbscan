@@ -64,7 +64,7 @@ class DBScan {
 		for(let i=0;i<len;i++) {
 			let np = data[i];
 			if(np!=p && np.visited) continue;
-			if(eudist(np.v,p.v,true) <= eps)
+			if(eudist(np.v,p.v,true) < eps)
 				ret.push(np);
 		}
 

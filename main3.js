@@ -61,7 +61,7 @@ function regionQuery(p) {
 	for(let i=0;i<len;i++) {
 		let np = data[i];
 		if(np!=p && visited[i]) continue;
-		if(eudist(np,p,true) <= eps)
+		if(eudist(np,p,true) < eps)
 			ret.push(i);
 	}
 

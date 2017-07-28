@@ -44,12 +44,12 @@ class DBScan {
 		let visited = this._visited, cluster = this._cluster;
 
 		for(let i=0;i<len;i++) {
-			ret.push(multi? data[i] : [data[i]]);
+			if(!multi) ret.push([data[i]]);
 			visited[i] = 0;
 			cluster[i] = -1;
 		}
 
-		return ret;
+		return multi? data : ret;
 	}
 
 	regionQuery(p) {
@@ -60,7 +60,7 @@ class DBScan {
 		for(let i=0;i<len;i++) {
 			let np = data[i];
 			if(np!=p && visited[i]) continue;
-			if(eudist(np,p,true) <= eps)
+			if(eudist(np,p,true) < eps)
 				ret.push(i);
 		}
 
